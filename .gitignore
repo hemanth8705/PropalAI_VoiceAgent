@@ -1,0 +1,8 @@
+# Ignore environment variables file
+.env
+
+# Ignore MP3 audio files
+*.mp3
+
+# Ignore WAV audio files
+*.wav
