@@ -7,11 +7,80 @@ PropalAI VoiceAgent is a Python-based project designed to provide voice recognit
 - **Audio Processing:** Handle MP3 and WAV audio files.
 - **Environment Configurations:** Uses a .env file for sensitive configurations.
 
+
+This project is an **AI Voice Chatbot** powered by:
+
+- 🎙️ **Speech-to-Text** via OpenAI Whisper
+- 🧠 **LLM Responses** from Groq (Gemma 2B or 9B)
+- 🔊 **Text-to-Speech (TTS)** using gTTS and Pygame
+- 🌐 Frontend built with **Streamlit**
+
+---
+
+## 🔄 Workflow: Data & Request Flow
+
+### 1. 🎤 Voice Input
+- User clicks **"Start Talking"**
+- Audio is recorded using `sounddevice`
+- Recording runs in real time until **"Stop & Chat"** is clicked
+
+---
+
+### 2. 🔊 Recording Handling
+- Audio is saved temporarily as a `.wav` file via `soundfile`
+- Audio snippet is trimmed based on actual speaking time
+
+---
+
+### 3. 🧠 Speech-to-Text (Whisper)
+- Whisper model transcribes the audio into text
+- Output is stored and displayed like:  
+  `🗣️ You said: <transcribed-text>`
+
+---
+
+### 4. 🚀 Sending Text to LLM
+- Transcribed text is sent to the **Groq LLM** using LangChain
+- Chat memory is managed with `ChatMessageHistory`
+- Model used: `Gemma-2b-it` or `Gemma-9b-it`
+- LLM returns a full response in natural language
+
+---
+
+### 5. 🗣️ Text-to-Speech (TTS)
+- The full LLM output is converted to voice using `gTTS`
+- Audio is played using `pygame.mixer`
+- Text is revealed only *after* speech playback finishes
+
+---
+
+### 6. 🧾 UI & Chat Log
+- Conversation is displayed in the Streamlit frontend
+- Session state keeps track of inputs and responses
+- Messages are stored in `st.session_state.chat_history`
+
+---
+
+## 🧬 Component-Level Breakdown
+
+| Component            | Technology            | Role                                   |
+|---------------------|-----------------------|----------------------------------------|
+| UI / Frontend       | Streamlit             | Controls recording and displays chat   |
+| Audio Input         | sounddevice           | Records mic input                      |
+| Audio Save          | soundfile             | Saves input as .wav                    |
+| Transcription       | Whisper (base model)  | Converts audio to text                 |
+| LLM Response        | LangChain + Groq      | Generates response from Gemma model    |
+| Audio Playback      | gTTS + Pygame         | Speaks LLM output                      |
+| Session Management  | Streamlit `session_state` | Maintains chat context               |
+
+---
+
+
 ## Setup
 
 1. Clone the repository:
    ```
-   git clone [REPOSITORY_URL]
+   git clone https://github.com/hemanth8705/PropalAI_VoiceAgent.git
    ```
 2. Change to the project directory:
    ```
@@ -28,43 +97,13 @@ PropalAI VoiceAgent is a Python-based project designed to provide voice recognit
    pip install -r requirements.txt
    ```
 
-## Workflow
-
-1. **Branching Strategy:**
-   - Create a new branch for each feature or bugfix:
-     ```
-     git checkout -b feature/your-feature-name
-     ```
-     
-2. **Development:**
-   - Make your changes and commit them with descriptive messages:
-     ```
-     git commit -am "Add feature X"
-     ```
-     
-3. **Testing:**
-   - Ensure all tests pass before pushing your changes:
-     ```
-     pytest
-     ```
-     
-4. **Pull Requests:**
-   - Push your branch to the remote repository:
-     ```
-     git push origin feature/your-feature-name
-     ```
-   - Open a pull request and describe your changes. Request reviews from team members.
-
-5. **Merging:**
-   - Once approved and all tests pass, merge your branch into the main branch.
-   - Delete the feature branch after merging.
 
 ## Usage
 
 - Ensure that you have the necessary environment variables set in the `.env` file.
 - Run the main application:
   ```
-  python VoiceAgent.py
+  streamlit run VoiceAgent.py
   ```
 
 ## Testing
